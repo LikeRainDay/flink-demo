@@ -42,10 +42,6 @@ allprojects {
         testImplementation("org.scalatest:scalatest_2.12:3.0.8")
     }
 
-    jar {
-        enabled = true
-    }
-
     def groupName = 'com.finecloud.flink'
     def artifactId = project.name
 

@@ -7,7 +7,9 @@ allprojects {
 
     group = 'com.finecloud.flink'
     version = "${FcFlinkVersion}"
+
     sourceCompatibility = 11
+    targetCompatibility = 11
 
     // 声明 https://packages.aliyun.com 私有仓库的连接和账号
     repositories {
@@ -34,7 +36,7 @@ allprojects {
         implementation("org.scala-lang:scala-compiler:2.12.10")
         implementation("org.scala-lang:scala-library:2.12.10")
         implementation("org.scala-lang:scala-reflect:2.12.10")
-        implementation("org.apache.flink:flink-scala_2.12:1.9.1")
+        implementation("org.apache.flink:flink-scala_2.12:1.11.2")
         implementation("org.apache.flink:flink-streaming-scala_2.12:1.11.2")
         implementation("org.apache.flink:flink-clients_2.12:1.11.2")
 

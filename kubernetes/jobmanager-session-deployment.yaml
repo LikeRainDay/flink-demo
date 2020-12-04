@@ -1,19 +1,23 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: flink-jobmanager
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: jobmanager
   template:
     metadata:
       labels:
         app: flink
         component: jobmanager
     spec:
-      restartPolicy: OnFailure
       containers:
         - name: jobmanager
           image: flink:1.11.2-scala_2.11
-          args: [ "standalone-job", "--job-classname", "com.job.ClassName", <optional arguments>, <job arguments> ] # optional arguments: ["--job-id", "<job id>", "--fromSavepoint", "/path/to/savepoint", "--allowNonRestoredState"]
+          args: ["jobmanager"]
           ports:
             - containerPort: 6123
               name: rpc
@@ -29,8 +33,6 @@ spec:
           volumeMounts:
             - name: flink-config-volume
               mountPath: /opt/flink/conf
-            - name: job-artifacts-volume
-              mountPath: /opt/flink/usrlib
           securityContext:
             runAsUser: 9999  # refers to user _flink_ from official flink image, change if necessary
       volumes:
@@ -42,6 +44,3 @@ spec:
                 path: flink-conf.yaml
               - key: log4j-console.properties
                 path: log4j-console.properties
-        - name: job-artifacts-volume
-          hostPath:
-            path: /host/path/to/job/artifacts

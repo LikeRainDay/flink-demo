@@ -1,0 +1,73 @@
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'scala'
+    apply plugin: 'maven'
+
+    group = 'com.finecloud.flink'
+    version = "${FcFlinkVersion}"
+    sourceCompatibility = 11
+
+    // 声明 https://packages.aliyun.com 私有仓库的连接和账号
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            credentials {
+                username '5f36320d209ad8bf482ded3b'
+                password '13x(EF60wFIg'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2023375-release-rtOW7Z/'
+        }
+        maven {
+            credentials {
+                username '5f36320d209ad8bf482ded3b'
+                password '13x(EF60wFIg'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2023375-snapshot-3DXpSd/'
+        }
+    }
+
+    dependencies {
+        implementation("org.scala-lang:scala-compiler:2.12.10")
+        implementation("org.scala-lang:scala-library:2.12.10")
+        implementation("org.scala-lang:scala-reflect:2.12.10")
+        implementation("org.apache.flink:flink-scala_2.12:1.9.1")
+        implementation("org.apache.flink:flink-streaming-scala_2.12:1.11.2")
+        implementation("org.apache.flink:flink-clients_2.12:1.11.2")
+
+        testImplementation("junit:junit:4.13.1")
+        testImplementation("org.scalatest:scalatest_2.12:3.0.8")
+    }
+
+    jar {
+        enabled = true
+    }
+
+    def groupName = 'com.finecloud.flink'
+    def artifactId = project.name
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: 'https://packages.aliyun.com/maven/repository/2023375-release-rtOW7Z/') {
+                    authentication(
+                            userName: '5f36320d209ad8bf482ded3b',
+                            password: '13x(EF60wFIg'
+                    )
+                }
+                snapshotRepository(url: 'https://packages.aliyun.com/maven/repository/2023375-snapshot-3DXpSd/') {
+                    authentication(
+                            userName: '5f36320d209ad8bf482ded3b',
+                            password: '13x(EF60wFIg'
+                    )
+                }
+                pom.version = version
+                pom.artifactId = artifactId
+                pom.groupId = groupName
+            }
+        }
+    }
+}
